@@ -1,0 +1,22 @@
+Welcome to documentation page for: Generating user-friendly vector images via evolutionary algorithms!
+=============================================================================================================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   project
+   instructions
+   code
+
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

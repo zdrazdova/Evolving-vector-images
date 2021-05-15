@@ -1,0 +1,30 @@
+{
+  	"image_name": "TestImages/1.png",
+  	"step_size": 4,
+  	"population_size": 12,
+	"number_of_generations": 100,
+  	"number_of_relevant_colors": 12,
+  	"color_limitation_size": 32,
+	"number_of_objects": 31,
+	"number_of_points": 20,
+    "operators": {
+        "mutation": {
+            "color_mutation_prob": 0.7,
+            "object_color_mutation_prob": 0.05,
+            "dimensions_mutation_prob": 1,
+            "object_dimensions_mutation_prob": 0.1,
+            "position_mutation_prob": 0.4,
+            "object_position_mutation_prob": 0.09,
+            "add_prob": 0.4,
+            "delete_prob": 0.4,
+            "vertex_mutation_prob": 1,
+            "object_vertex_mutation_prob": 0.06
+        },
+        "xover_prob": 0.9
+    },
+    "image_properties":{
+      "border_width": 2,
+      "color_distance": 10
+    }
+}
+

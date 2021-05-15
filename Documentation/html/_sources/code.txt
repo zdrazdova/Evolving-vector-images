@@ -1,0 +1,17 @@
+Documentation for: Triangulation
+=======================================
+
+.. automodule:: triangulation
+   :members:
+
+Documentation for: Connect rectangles
+============================================
+
+.. automodule:: connect_rectangles
+   :members:
+
+Documentation for: Multi-objective
+============================================
+
+.. automodule:: multi_objective
+   :members:

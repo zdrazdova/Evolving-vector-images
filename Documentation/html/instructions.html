@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Instructions &mdash; Generating user-friendly vector emages 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Generating user-friendly vector emages 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Documentation for: Triangulation" href="code.html" />
+    <link rel="prev" title="Information" href="project.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="instructions">
+<h1>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h1>
+<p>This section should give you enough information to be able to use the three programs fully.</p>
+<div class="section" id="running-the-program">
+<h2>Running the program<a class="headerlink" href="#running-the-program" title="Permalink to this headline">¶</a></h2>
+<p>To run any of the three programs you have to have python installed, version at least python3.5. Once you have it simply type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>python3 *nameofprogram*.py *parameters*.json
+</pre></div>
+</div>
+<p>Replace <em>nameofprogram</em> either with triangulation, <em>connect_rectangles</em> or <em>multi_objective</em>.</p>
+<p>Name of json file with parameters should replace <em>parameters</em>. If you want to use default settings, use file: <em>parameters.json</em></p>
+<p>Results are saved in file <em>algorithm_name</em> _results, where <em>algorithms_name</em> is <em>triangulation</em>, <em>connect_rectangles</em> or <em>multi_objective</em>. For connect rectangles and triangulation method there are ten results. One best solution when reaching each tenth of total number of generations. Each solution has two variants – basic one and advanced created by connecting objects into polygons. In multi-objective optimization all individuals that are in pareto front after the end of the evolution are saved. For all algorithms fitness is printed for all individuals that are saved at the end of the evolution.</p>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>There needs to be <em>.json</em> a file containing parameters for the evolutionary algorithm in general, settings for each genetic operator and some additional data for generating images. Here, we describe limits for parameters. If you use value outside of recommended range, the program will not work properly or, in some cases, it will not work at all.</p>
+</div>
+<div class="section" id="parameters-for-the-evolution">
+<h2>Parameters for the evolution<a class="headerlink" href="#parameters-for-the-evolution" title="Permalink to this headline">¶</a></h2>
+<p><strong>image_name</strong>: Name of raster image. Use .bmp, .png, .jpg or .JPEG. The use of (semi) transparent images is not recommended. We recommend using images with dimensions around 200-300 pixels, if you want to get good results in reasonable amount of time.</p>
+<p><strong>step_size</strong>: Pixel if each Nth row and Nth column is evaluated in fitness function where N = step_size. It has to be greater than zero. We recommend using values in range 4-10. If this value is too big it leads to poor results.</p>
+<p><strong>population_size</strong>: Number of individuals in a population. It has to be greater than 0. For multi-objective optimization it needs to be a multiple of 4.</p>
+<p><strong>number_of_generations</strong>: How many generations should be evolved in total. This number has to be greater than 0. For satisfactory results this number should be several hundreds or more.</p>
+<p><strong>number_of_relevant_colors</strong>: How many of the most frequent colors should be used for evolving the picture. This is applicable in <em>multi-objective</em> and <em>connecting rectangles</em> algorithms.</p>
+<p><strong>color_limitation_size</strong>: Parameter how to limit spectrum of color values. This number should be at least 1, which means no limitation. Limitation parameter <em>n</em> means rounding down each color value to the nearest multiple of <em>n</em> that is less or equal to the original value. This is applicable in <em>multi-objective</em> and <em>connecting rectangles</em> algorithms.</p>
+<p><strong>number_of_objects</strong>: Number of objects in an individual for <em>multi-objective</em> and <em>connecting rectangles</em>. It has to be at least two.</p>
+<p><strong>number_of_points</strong>: Number of points in an individual for <em>triangulation</em>. It has to be at least 5.</p>
+</div>
+<div class="section" id="parameters-for-genetic-operators">
+<h2>Parameters for genetic operators<a class="headerlink" href="#parameters-for-genetic-operators" title="Permalink to this headline">¶</a></h2>
+<p><strong>mutation</strong>:</p>
+<blockquote>
+<div><p><strong>color_mutation_prob</strong>: Probability color mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>object_color_mutation_prob</strong>: Probability, for each object, color mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>dimensions_mutation_prob</strong>: Probability dimension mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>object_dimensions_mutation_prob</strong>: Probability, for each object, dimension mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>position_mutation_prob</strong>: Probability position mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>object_position_mutation_prob</strong>: Probability, for each object, position mutation will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+<p><strong>add_prob</strong>: Probability add object mutation will be executed. Number between 0 and 1. Used in <em>multi-objective optimization</em>.</p>
+<p><strong>delete_prob</strong>: Probability delete object mutation will be executed. Number between 0 and 1. Used in <em>multi-objective optimization</em>.</p>
+<p><strong>vertex_mutation_prob</strong>: Probability vertex mutation will be executed. Number between 0 and 1. Used in <em>triangulation</em>.</p>
+<p><strong>object_vertex_mutation_prob</strong>: Probability, for each object, vertex mutation will be executed. Number between 0 and 1. Used in <em>triangulation</em>.</p>
+</div></blockquote>
+<p><strong>xover_prob</strong>: Probability crossover will be executed. Number between 0 and 1. Used in <em>connecting rectangles</em> and <em>multi-objective optimization</em>.</p>
+</div>
+<div class="section" id="parameters-for-images">
+<h2>Parameters for images<a class="headerlink" href="#parameters-for-images" title="Permalink to this headline">¶</a></h2>
+<p><strong>border_width</strong>: Width of black border line of objects. This number has to be at least 0. No border is equal to 0 width.</p>
+<p><strong>color_distance</strong>: Maximum distance of two colors to be considered similar enough for triangulation algorithm. If we have two neighboring polygons of similar color, they are connected into one during post-processing.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Instructions</a><ul>
+<li><a class="reference internal" href="#running-the-program">Running the program</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#parameters-for-the-evolution">Parameters for the evolution</a></li>
+<li><a class="reference internal" href="#parameters-for-genetic-operators">Parameters for genetic operators</a></li>
+<li><a class="reference internal" href="#parameters-for-images">Parameters for images</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="project.html" title="previous chapter">Information</a></li>
+      <li>Next: <a href="code.html" title="next chapter">Documentation for: Triangulation</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/instructions.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Zuzana Drazdova.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/instructions.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

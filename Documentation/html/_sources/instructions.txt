@@ -1,0 +1,75 @@
+Instructions
+============
+
+This section should give you enough information to be able to use the three programs fully.
+
+Running the program
+-------------------
+
+To run any of the three programs you have to have python installed, version at least python3.5. Once you have it simply type:
+
+::
+
+    python3 *nameofprogram*.py *parameters*.json
+
+Replace *nameofprogram* either with triangulation, *connect_rectangles* or *multi_objective*.
+
+Name of json file with parameters should replace *parameters*. If you want to use default settings, use file: *parameters.json*
+
+Results are saved in file *algorithm_name* _results, where *algorithms_name* is *triangulation*, *connect_rectangles* or *multi_objective*. For connect rectangles and triangulation method there are ten results. One best solution when reaching each tenth of total number of generations. Each solution has two variants – basic one and advanced created by connecting objects into polygons. In multi-objective optimization all individuals that are in pareto front after the end of the evolution are saved. For all algorithms fitness is printed for all individuals that are saved at the end of the evolution.
+
+
+Parameters
+----------
+There needs to be *.json* a file containing parameters for the evolutionary algorithm in general, settings for each genetic operator and some additional data for generating images. Here, we describe limits for parameters. If you use value outside of recommended range, the program will not work properly or, in some cases, it will not work at all.
+
+Parameters for the evolution
+----------------------------
+**image_name**: Name of raster image. Use .bmp, .png, .jpg or .JPEG. The use of (semi) transparent images is not recommended. We recommend using images with dimensions around 200-300 pixels, if you want to get good results in reasonable amount of time.
+
+**step_size**: Pixel if each Nth row and Nth column is evaluated in fitness function where N = step_size. It has to be greater than zero. We recommend using values in range 4-10. If this value is too big it leads to poor results.
+
+**population_size**: Number of individuals in a population. It has to be greater than 0. For multi-objective optimization it needs to be a multiple of 4.
+
+**number_of_generations**: How many generations should be evolved in total. This number has to be greater than 0. For satisfactory results this number should be several hundreds or more. 
+
+**number_of_relevant_colors**: How many of the most frequent colors should be used for evolving the picture. This is applicable in *multi-objective* and *connecting rectangles* algorithms.
+
+**color_limitation_size**: Parameter how to limit spectrum of color values. This number should be at least 1, which means no limitation. Limitation parameter *n* means rounding down each color value to the nearest multiple of *n* that is less or equal to the original value. This is applicable in *multi-objective* and *connecting rectangles* algorithms.
+
+**number_of_objects**: Number of objects in an individual for *multi-objective* and *connecting rectangles*. It has to be at least two.
+
+**number_of_points**: Number of points in an individual for *triangulation*. It has to be at least 5.
+
+Parameters for genetic operators
+--------------------------------
+**mutation**:
+
+  **color_mutation_prob**: Probability color mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **object_color_mutation_prob**: Probability, for each object, color mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **dimensions_mutation_prob**: Probability dimension mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **object_dimensions_mutation_prob**: Probability, for each object, dimension mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **position_mutation_prob**: Probability position mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **object_position_mutation_prob**: Probability, for each object, position mutation will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+  **add_prob**: Probability add object mutation will be executed. Number between 0 and 1. Used in *multi-objective optimization*.
+
+  **delete_prob**: Probability delete object mutation will be executed. Number between 0 and 1. Used in *multi-objective optimization*.
+
+  **vertex_mutation_prob**: Probability vertex mutation will be executed. Number between 0 and 1. Used in *triangulation*.
+
+  **object_vertex_mutation_prob**: Probability, for each object, vertex mutation will be executed. Number between 0 and 1. Used in *triangulation*. 
+
+**xover_prob**: Probability crossover will be executed. Number between 0 and 1. Used in *connecting rectangles* and *multi-objective optimization*.
+
+Parameters for images
+---------------------
+**border_width**: Width of black border line of objects. This number has to be at least 0. No border is equal to 0 width.
+
+**color_distance**: Maximum distance of two colors to be considered similar enough for triangulation algorithm. If we have two neighboring polygons of similar color, they are connected into one during post-processing.
+

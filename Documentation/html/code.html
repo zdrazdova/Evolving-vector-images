@@ -1,0 +1,1929 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Documentation for: Triangulation &mdash; Generating user-friendly vector emages 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Generating user-friendly vector emages 1.0.0 documentation" href="index.html" />
+    <link rel="prev" title="Instructions" href="instructions.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-triangulation">
+<span id="documentation-for-triangulation"></span><h1>Documentation for: Triangulation<a class="headerlink" href="#module-triangulation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="triangulation.Line_segment">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Line_segment</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Line_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one line segment. Line segment is determined by two
+endpoints.</p>
+<dl class="method">
+<dt id="triangulation.Line_segment.not_crossing">
+<code class="descname">not_crossing</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Line_segment.not_crossing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether line_segment intersects with any line_segment from
+list <em>lines</em>. Method goes through the list and for each item calculates
+determinant for lines corresponding to this item and line_segment. If
+determinant differs from 0, coordinates of intersection are calculated.
+If coordinates lie somewhere on line segments excluding their
+endpoints, method returns False.
+Othewise we go to the next item. If all items in the list were checked
+and no intersection found, method returns True.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lines</strong> &#8211; A list of line segments.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True/False</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Lines">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Lines</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all lines in the image in <em>self.lines</em>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.MyImage">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">MyImage</code><span class="sig-paren">(</span><em>image</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.MyImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing the source image. It preserves information about
+image <em>width</em>, <em>height</em> and color values of some <em>pixels</em> according to
+given <em>step_size</em>.</p>
+<p>Pixels: Create a list of color values of pixels in an image. List
+contains a value for each pixel in every nth column of every nth row in
+an image where n equals <em>step_size</em>. Values for red, green and blue are
+rounded down to a multiple of <em>color_limitation_size</em>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Picture">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Picture</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Picture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Picture represents an individual. It contains a list of points
+<em>self.points</em>, list of lines <em>self.lines</em> and a list of triangles
+<em>self.triangles</em>. It has method for saving the individual as a set of
+triangles and a set of polygons in SVG (<em>save_triangles</em> and
+<em>save_polygons</em>), one type of mutation (<em>mutate_vertex</em>) and a fitness
+function (<em>evaluate_rectangles_rgb</em>).</p>
+<dl class="method">
+<dt id="triangulation.Picture.evaluate_triangles_rgb">
+<code class="descname">evaluate_triangles_rgb</code><span class="sig-paren">(</span><em>individual</em>, <em>width</em>, <em>height</em>, <em>pixels</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Picture.evaluate_triangles_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate an individual acording to rgb based fitness. For each item in
+<em>pixels</em> calculate the difference with color value of corresponding point
+in an individual. The difference is calculated for red, green and blue
+part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>individual</strong> &#8211; An individual we want to evaluate.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Fitness value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="triangulation.Picture.mutate_vertex">
+<code class="descname">mutate_vertex</code><span class="sig-paren">(</span><em>individual</em>, <em>image</em>, <em>width</em>, <em>height</em>, <em>object_vertex_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Picture.mutate_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mutate position of a vertex and modify its surroundings. For each
+point with probability <em>object_vertex_mutation_prob</em> do:</p>
+<p>Create new x and y coordinates via the gaussian mutation. New position has to lie
+somewhere on the canvas and it cannot be identical to position of any
+of existing points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>image</strong> &#8211; Source image.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>object_vertex_mutation_prob</strong> &#8211; Probability for an object(point) to be mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="triangulation.Picture.save_polygons">
+<code class="descname">save_polygons</code><span class="sig-paren">(</span><em>name</em>, <em>width</em>, <em>height</em>, <em>border_width</em>, <em>color_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Picture.save_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save polygons to a file called <em>name</em>-polygons in SVG format. Method
+<em>connect</em> is used to create polygons by connecting triangles of
+similar color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of SVG file to create.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>border_width</strong> &#8211; Width of black border for the polygons.</li>
+<li><strong>color_distance</strong> &#8211; Maximum distance of colors to be considered similar.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="triangulation.Picture.save_triangles">
+<code class="descname">save_triangles</code><span class="sig-paren">(</span><em>name</em>, <em>width</em>, <em>height</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Picture.save_triangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save triangles to a file called <em>name</em> in SVG format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of SVG file to create.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>border_width</strong> &#8211; Width of black border for the triangles.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Point">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one point. Point is given by a pair of x and y
+coordinates.</p>
+<dl class="method">
+<dt id="triangulation.Point.already_exists">
+<code class="descname">already_exists</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Point.already_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether given point already exists in a list <em>points</em>. If it
+does, return True. Otherwise return False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> &#8211; A list of points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True/False</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Polygon">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>vertices</em>, <em>color</em>, <em>area</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object polygon consisting of a list of vertices and fill-color.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Triangle">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Triangle</code><span class="sig-paren">(</span><em>s</em>, <em>t</em>, <em>u</em>, <em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one triangle. Triangle is determined by three points
+and a color value.</p>
+<dl class="method">
+<dt id="triangulation.Triangle.choose_color">
+<code class="descname">choose_color</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Triangle.choose_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate color for a triangle. First, <em>order_points</em> method is used
+to sort vertices of a triangle in a desired way. To determine which
+pixels lie in a triangle we start from the top vertex and move in rows
+downwards. For each row, x coordinates of left and right border are
+calculated and we work with pixels in between. This process continues
+until it reaches y coordinates of middle point. Similar process starts
+in the bottom vertex and moves upwards until it reaches the middle
+vertex. This way all pixels are recorded.
+Then for each pixel in a triangle red, green and blue values are
+extracted. All values for red are added up and and the sum is divided
+by the total number of pixels in the triangle. Average values for green
+and blue are calculated in the same manner. Triplet of average values
+is desired color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> &#8211; Source image.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Triplet of values = color.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="triangulation.Triangle.not_in_line">
+<code class="descname">not_in_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Triangle.not_in_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether vertices of a triangle are in one line. If they
+are not, True is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True/False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="triangulation.Triangle.order_points">
+<code class="descname">order_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Triangle.order_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort three points according to their y coordinate. Return a, b, c
+where a is top (has smallest y) and c is bottom (has biggest y value).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Points a, b and c.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="triangulation.Triangles">
+<em class="property">class </em><code class="descclassname">triangulation.</code><code class="descname">Triangles</code><span class="sig-paren">(</span><em>points</em>, <em>lines</em>, <em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.Triangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all triangles in the image in <em>self.triangles</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.area">
+<code class="descclassname">triangulation.</code><code class="descname">area</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>x3</em>, <em>y3</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate area of a triangle given by three points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> &#8211; X coordinate of first point.</li>
+<li><strong>y1</strong> &#8211; Y coordinate of first point.</li>
+<li><strong>x2</strong> &#8211; X coordinate of second point.</li>
+<li><strong>y2</strong> &#8211; Y coordinate of second point.</li>
+<li><strong>x3</strong> &#8211; X coordinate of third point.</li>
+<li><strong>y3</strong> &#8211; Y coordinate of third point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Area of triangle.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.connect">
+<code class="descclassname">triangulation.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>lines</em>, <em>triangles</em>, <em>color_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect triangles into polygons. First convert triangles into polygons.
+Then create a list of all lines sorted from left to right. For each line
+check whether it is needed. If line is edge of two polygons with similar
+enough color it will be deleted and the two polygons will be connected into
+a new one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>triangles</strong> &#8211; List of all reactangles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of polygons.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.connect_parts">
+<code class="descclassname">triangulation.</code><code class="descname">connect_parts</code><span class="sig-paren">(</span><em>line</em>, <em>polygons</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.connect_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect two polygons into a new one via <em>line</em>. Find one endpoint of
+<em>line</em> in each of the two polygons. Rotate vertices in each polygon so the
+endpoint is one the first place. If needed swap orders of polygons, we want
+the other endpoint to be on the second place. Then created new list of
+vertices by removing first items of the two lists we have and concatenating
+them. Create new polygon from list of vertices and <em>color</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>line</strong> &#8211; Line segment that is part of both polygons.</li>
+<li><strong>polygons</strong> &#8211; Two polygons to be connected.</li>
+<li><strong>color</strong> &#8211; Color of the new polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Newly created polygon.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.dist">
+<code class="descclassname">triangulation.</code><code class="descname">dist</code><span class="sig-paren">(</span><em>color1</em>, <em>color2</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the distance of two colosr. Distance is sum of absolute values
+of differences in color compounds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>color1</strong> &#8211; First color.</li>
+<li><strong>color2</strong> &#8211; Second color.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Weighted average of colors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.edit">
+<code class="descclassname">triangulation.</code><code class="descname">edit</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit polygon by removing special case of multiple vertices. Special case
+is a triplet of consecutive vertices where the first one and last are
+identical. Remove the middle one and one of the identical two.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygon</strong> &#8211; Polygon to be edited.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Edited polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.evolution">
+<code class="descclassname">triangulation.</code><code class="descname">evolution</code><span class="sig-paren">(</span><em>image</em>, <em>width</em>, <em>height</em>, <em>pixels</em>, <em>number_of_points</em>, <em>population_size</em>, <em>number_of_generations</em>, <em>vertex_mutation_prob</em>, <em>object_vertex_mutation_prob</em>, <em>border_width</em>, <em>color_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.evolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute evolution. Fitness function is registered. Population of
+<em>population_size</em> individuals is created. Tools and selection method are
+registred into toolbox. Simple hall of fame method is implemented.
+For each generation: Offspring are chosen via selection method. Then
+mutation is executed and fitness is evaluated. New population is selected
+from individuals in last population. Hall of fame is updated.</p>
+<p>Ten times during the evolution the best individual at that point is saved
+as a set of rectangles and a set of connected polygons in SVG files.
+After all generations, the best individual is saved as a set of rectangles
+and a set of connected polygons in SVG files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>number_of_objects</strong> &#8211; Initial number of shapes in one individual.</li>
+<li><strong>population_size</strong> &#8211; Number of individuals in a population.</li>
+<li><strong>number_of_generations</strong> &#8211; Total number of generations to be evolved.</li>
+<li><strong>color_mutation_prob</strong> &#8211; Probability that color mutation will be done.</li>
+<li><strong>object_color_mutation_prob</strong> &#8211; Probability that color mutation will be
+executed for an object.</li>
+<li><strong>dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation will be
+done.</li>
+<li><strong>object_dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation
+will be executed for an object.</li>
+<li><strong>position_mutation_prob</strong> &#8211; Probability that position mutation will be
+done.</li>
+<li><strong>object_position_mutation_prob</strong> &#8211; Probability that position mutation
+will be executed for an object.</li>
+<li><strong>xover_prob</strong> &#8211; Probability that crossover will be done.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.exists">
+<code class="descclassname">triangulation.</code><code class="descname">exists</code><span class="sig-paren">(</span><em>triangle</em>, <em>lines</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether triangle exists. To decide, list of line_segments on
+canvas is used. If all three edges appear in line_segments, triangle
+exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>triangle</strong> &#8211; A triangle to be examined.</li>
+<li><strong>lines</strong> &#8211; List of line segments.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.generate_points">
+<code class="descclassname">triangulation.</code><code class="descname">generate_points</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.generate_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate number_of_points points, for each point, x and y coordinates are
+saved. Points are placed on a canvas width dimensions <em>width</em> and <em>height</em>.
+First, four points are placed in the corners of the canvas. Then canvas
+is divided into parts of equal area and one point is placed randomly
+within one area. The rest of the points is placed randomly anywhere as
+long as none two points have the exact same coordinates. Method
+<em>already_exists</em> of class Point is used to check whether point with
+identical coordinates already exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>width</strong> &#8211; Width of the canvas.</li>
+<li><strong>height</strong> &#8211; Height of the canvas.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.is_edge">
+<code class="descclassname">triangulation.</code><code class="descname">is_edge</code><span class="sig-paren">(</span><em>line</em>, <em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.is_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a <em>line</em> is one of the edges of given <em>polygon</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>line</strong> &#8211; Line segment.</li>
+<li><strong>polygon</strong> &#8211; Polygon to be examined.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.line_key">
+<code class="descclassname">triangulation.</code><code class="descname">line_key</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.line_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare x coordinate of endpoints of <em>line</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>line</strong> &#8211; Given line.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tuple of x values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.log_fitness">
+<code class="descclassname">triangulation.</code><code class="descname">log_fitness</code><span class="sig-paren">(</span><em>fitness_tuple</em>, <em>width</em>, <em>height</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.log_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate normalized fitness for the first value in fitness tuple.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fitness_tuple</strong> &#8211; Tuple of fitness values.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Normalized fitness.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.modify_polygon">
+<code class="descclassname">triangulation.</code><code class="descname">modify_polygon</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.modify_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>While there exist certain unwanted constelation of vertices, modify
+polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Modifies polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.multi_vertices">
+<code class="descclassname">triangulation.</code><code class="descname">multi_vertices</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.multi_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether there is a special case of multiple vertices in
+a polygon. Special case is a triplet of consecutive vertices where the
+first one and last are identical.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygon</strong> &#8211; Polygon to be examined.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True/False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.no_point_inside">
+<code class="descclassname">triangulation.</code><code class="descname">no_point_inside</code><span class="sig-paren">(</span><em>triangle</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.no_point_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether any point of the <em>points</em> list lies in given triangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>triangle</strong> &#8211; Given triangle.</li>
+<li><strong>points</strong> &#8211; List of points.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.point_in_triangle">
+<code class="descclassname">triangulation.</code><code class="descname">point_in_triangle</code><span class="sig-paren">(</span><em>triangle</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.point_in_triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether given point lies in given triangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Triangle:</th><td class="field-body"><p class="first">Given triangle.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; X coordinate of given point.</li>
+<li><strong>y</strong> &#8211; Y coordinate of given point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.rotate">
+<code class="descclassname">triangulation.</code><code class="descname">rotate</code><span class="sig-paren">(</span><em>l</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate list <em>l</em> <em>n</em> places to the left.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rotated list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.same">
+<code class="descclassname">triangulation.</code><code class="descname">same</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.same" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether two points have identical x and y coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; Point a.</li>
+<li><strong>b</strong> &#8211; Point b.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.swap_direction">
+<code class="descclassname">triangulation.</code><code class="descname">swap_direction</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.swap_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap direction of order of vertices in list <em>l</em>. First vertex remains
+in its place.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with swapped direction.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.triangles_to_polygons">
+<code class="descclassname">triangulation.</code><code class="descname">triangles_to_polygons</code><span class="sig-paren">(</span><em>triangles</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.triangles_to_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of triangles into a list of polygons. Each polygon is
+created from vertices of one triangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>triangles</strong> &#8211; List of triangles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of polygons.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="triangulation.weighted_avg">
+<code class="descclassname">triangulation.</code><code class="descname">weighted_avg</code><span class="sig-paren">(</span><em>polygon1</em>, <em>polygon2</em><span class="sig-paren">)</span><a class="headerlink" href="#triangulation.weighted_avg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the weighted average color of <em>polygon1</em> and <em>polygon2</em>.
+Weights are given by the area of the polygons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygon1</strong> &#8211; First polygon.</li>
+<li><strong>polygon2</strong> &#8211; Second polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Weighted average of colors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-connect_rectangles">
+<span id="documentation-for-connect-rectangles"></span><h1>Documentation for: Connect rectangles<a class="headerlink" href="#module-connect_rectangles" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="connect_rectangles.Line_segment">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Line_segment</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Line_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one line segment. Line segment is determined by two
+endpoints.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.Lines">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Lines</code><span class="sig-paren">(</span><em>polygons</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all lines in the image in <em>self.lines</em>. This means all
+edges of all polygons.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.MyImage">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">MyImage</code><span class="sig-paren">(</span><em>image_name</em>, <em>color_limitation_size</em>, <em>number_of_relevant_colors</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.MyImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing the source image. It preserves information about
+image <em>width</em>, <em>height</em>, list of <em>relevant_colors</em> and color values of some
+<em>pixels</em> according to given <em>step_size</em>.</p>
+<p>Relevant_colors: For each pixel, values for red, green and blue are
+rounded down to a multiple of <em>color_limitation_size</em>. Frequency of occurence
+of these rounded colors is calculated. Colors are then sorted according
+to their frequency and amount equal to <em>number_of_relevant_colors</em> of
+most frequent ones is selected.</p>
+<p>Pixels: Create a list of color values of pixels in an image. List
+contains a value for each pixel in every nth column of every nth row in
+an image where n equals <em>step_size</em>. Values for red, green and blue are
+rounded down to a multiple of <em>color_limitation_size</em>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.Picture">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Picture</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>relevant_colors</em>, <em>number_of_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Picture represents an individual. It contains a list of rectangles
+<em>self.rectangles</em>, method for saving the individual as a set of rectangles
+and a set of polygons in SVG (<em>save_rectangles</em> and <em>save_polygons</em>), three
+types of mutation (<em>mutate_color</em>, <em>mutate_dimensions</em>, <em>mutate_position</em>)
+and a fitness function (<em>evaluate_rectangles_rgb</em>).</p>
+<dl class="method">
+<dt id="connect_rectangles.Picture.evaluate_rectangles_rgb">
+<code class="descname">evaluate_rectangles_rgb</code><span class="sig-paren">(</span><em>individual</em>, <em>width</em>, <em>height</em>, <em>pixels</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.evaluate_rectangles_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate an individual acording to rgb based fitness. For each item in
+<em>pixels</em> calculate the difference with color value of corresponding point
+in an individual. The difference is calculated for red, green and blue
+part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>individual</strong> &#8211; An individual we want to evaluate.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Fitness value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="connect_rectangles.Picture.mutate_color">
+<code class="descname">mutate_color</code><span class="sig-paren">(</span><em>individual</em>, <em>relevant_colors</em>, <em>object_color_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.mutate_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color mutation: For each objects it is executed with probability
+<em>object_color_mutation_prob</em>. New color will be chosen randomly from
+the <em>relevant_colors</em> list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>object_color_mutation_prob</strong> &#8211; Probability for each object to be
+mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="connect_rectangles.Picture.mutate_dimensions">
+<code class="descname">mutate_dimensions</code><span class="sig-paren">(</span><em>individual</em>, <em>object_dimensions_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.mutate_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensions mutation: For each objects it is executed with probability
+<em>object_color_mutation_prob</em>. Dimensions will be changed via gaussian
+mutation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>object_dimensions_mutation_prob</strong> &#8211; Probability for each object to
+be mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="connect_rectangles.Picture.mutate_position">
+<code class="descname">mutate_position</code><span class="sig-paren">(</span><em>individual</em>, <em>object_position_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.mutate_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position mutation: For each objects it is executed with probability
+<em>object_position_mutation_prob</em>, position will be changed via
+gaussian mutation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>object_position_mutation_prob</strong> &#8211; Probability for each object to be
+mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="connect_rectangles.Picture.save_polygons">
+<code class="descname">save_polygons</code><span class="sig-paren">(</span><em>name</em>, <em>width</em>, <em>height</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.save_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save polygons created by connecting rectangles to a file called
+<em>name</em>-polygons in SVG format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of SVG file to create.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>border_width</strong> &#8211; Width of black border for the polygons.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="connect_rectangles.Picture.save_rectangles">
+<code class="descname">save_rectangles</code><span class="sig-paren">(</span><em>name</em>, <em>width</em>, <em>height</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Picture.save_rectangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save rectangles to a file called <em>name</em>-rectangles in SVG format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of SVG file to create.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>border_width</strong> &#8211; Width of black border for the rectangles.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.Point">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one point. Point is given by a pair of x and y
+coordinates.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.Polygon">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>vertices</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object polygon consisting of a list of vertices and fill-color.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="connect_rectangles.Rectangle">
+<em class="property">class </em><code class="descclassname">connect_rectangles.</code><code class="descname">Rectangle</code><span class="sig-paren">(</span><em>color</em>, <em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.Rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing one rectangle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.connect">
+<code class="descclassname">connect_rectangles.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>rectangles</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect rectangles into polygons. First convert rectangles into
+polygons. Then create a list of all lines. For each line check whether it
+is needed. If line is edge of two polygons with identical color it will be
+deleted and the two polygons will be connected into a new one.</p>
+<p>Cut out all parts of <em>rectangles</em> that are outside the canvas. If
+rectangle lies outside completely, it is deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rectangles</strong> &#8211; List of all reactangles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of polygons.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.connect_parts">
+<code class="descclassname">connect_rectangles.</code><code class="descname">connect_parts</code><span class="sig-paren">(</span><em>line</em>, <em>polygons</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.connect_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect two polygons into a new one via <em>line</em>. Find one endpoint of
+<em>line</em> in each of the two polygons. Rotate vertices in each polygon so the
+endpoint is one the first place. If needed swap orders of polygons, we want
+the other endpoint to be on the second place. Then created new list of
+vertices by concatenating two lists created by removing first item of the
+two lists we have. Create new polygon from list of vertices and <em>color</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>line</strong> &#8211; Line segment that is part of both polygons.</li>
+<li><strong>polygons</strong> &#8211; Two polygons to be connected.</li>
+<li><strong>color</strong> &#8211; Color of the new polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Newly created polygon.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.covered">
+<code class="descclassname">connect_rectangles.</code><code class="descname">covered</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.covered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether <em>bottom</em> rectangle is covered by the <em>top</em> one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.cut">
+<code class="descclassname">connect_rectangles.</code><code class="descname">cut</code><span class="sig-paren">(</span><em>rectangles</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cut out all parts of <em>rectangles</em> that are outside the canvas. If
+rectangle lies otside completely, it is deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rectangles</strong> &#8211; List of all reactangles.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of rectangles where no parts are outside the canvas area.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.delete_covered">
+<code class="descclassname">connect_rectangles.</code><code class="descname">delete_covered</code><span class="sig-paren">(</span><em>rectangles</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.delete_covered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all rectangles that are completely covered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rectangles</strong> &#8211; List of rectnagles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of rectangles without completely covered ones.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.divide">
+<code class="descclassname">connect_rectangles.</code><code class="descname">divide</code><span class="sig-paren">(</span><em>rectangles</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide <em>rectangles</em> into rectangular pieces. Go from the top layer to the
+bottom one. For each pair, modify the bottom one according to the top one.
+Modify means remove covered part a divide the rest into rectangles. It
+leads to deleting the original rectangle and insering new ones.</p>
+<p>If object is covered completely, it is deleted and nothing as inserted.
+Parts outside the canvas are removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rectangles</strong> &#8211; A list of rectangles.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of rectangles in one layer with no parts outside the area</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.edit">
+<code class="descclassname">connect_rectangles.</code><code class="descname">edit</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit polygon by removing special case of multiple vertices. Special case
+is a triplet of consecutive vertices where the first one and last are
+identical. Remove the middle one and one of the identical two.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygon</strong> &#8211; Polygon to be edited.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Edited polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.evolution">
+<code class="descclassname">connect_rectangles.</code><code class="descname">evolution</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>relevant_colors</em>, <em>pixels</em>, <em>number_of_objects</em>, <em>population_size</em>, <em>number_of_generations</em>, <em>color_mutation_prob</em>, <em>object_color_mutation_prob</em>, <em>dimensions_mutation_prob</em>, <em>object_dimensions_mutation_prob</em>, <em>position_mutation_prob</em>, <em>object_position_mutation_prob</em>, <em>xover_prob</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.evolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute evolution. Fitness function is registered. Population of
+<em>population_size</em> individuals is created. Tools and selection method are
+registred into toolbox. Simple hall of fame method is implemented.
+For each generation: Offspring are chosen via selection method. Then
+crossover and mutations are executed and fitness is evaluated. New
+population is selected from individuals in last population. Hall of fame is
+updated.
+Ten times during the evolution the best individual at that point is saved
+as a set of rectangles and a set of connected polygons in SVG files.
+After all generations, the best individual is saved as a set of rectangles
+and a set of connected polygons in SVG files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>number_of_objects</strong> &#8211; Initial number of shapes in one individual.</li>
+<li><strong>population_size</strong> &#8211; Number of individuals in a population.</li>
+<li><strong>number_of_generations</strong> &#8211; Total number of generations to be evolved.</li>
+<li><strong>color_mutation_prob</strong> &#8211; Probability that color mutation will be done.</li>
+<li><strong>object_color_mutation_prob</strong> &#8211; Probability that color mutation will be
+executed for an object.</li>
+<li><strong>dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation will be
+done.</li>
+<li><strong>object_dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation
+will be executed for an object.</li>
+<li><strong>position_mutation_prob</strong> &#8211; Probability that position mutation will be
+done.</li>
+<li><strong>object_position_mutation_prob</strong> &#8211; Probability that position mutation
+will be executed for an object.</li>
+<li><strong>xover_prob</strong> &#8211; Probability that crossover will be done.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.four_points">
+<code class="descclassname">connect_rectangles.</code><code class="descname">four_points</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.four_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyze the case where all four points of the <em>top</em> rectangle lie in
+the <em>bottom</em> one. Create new rectangles from parts that are not covered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of newly created rectangles.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.is_covered">
+<code class="descclassname">connect_rectangles.</code><code class="descname">is_covered</code><span class="sig-paren">(</span><em>i</em>, <em>rectangles</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.is_covered" title="Permalink to this definition">¶</a></dt>
+<dd><p>For rectangle with index <em>i</em> determine whether is it covered completely
+or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>i</strong> &#8211; Index of examined rectangle.</li>
+<li><strong>rectangles</strong> &#8211; List of all rectagles.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.is_edge">
+<code class="descclassname">connect_rectangles.</code><code class="descname">is_edge</code><span class="sig-paren">(</span><em>line</em>, <em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.is_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a <em>line</em> is one of the edges of given <em>polygon</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>line</strong> &#8211; Line segment.</li>
+<li><strong>polygon</strong> &#8211; Polygon to be examined.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.log_fitness">
+<code class="descclassname">connect_rectangles.</code><code class="descname">log_fitness</code><span class="sig-paren">(</span><em>fitness_tuple</em>, <em>width</em>, <em>height</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.log_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate normalized fitness for the first value in fitness tuple.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fitness_tuple</strong> &#8211; Tuple of fitness values.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Normalized fitness.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.modify">
+<code class="descclassname">connect_rectangles.</code><code class="descname">modify</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.modify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify <em>bottom</em> rectangle according to the <em>top</em> one. Rectangle is
+modified depeding on the number of vertices of the top one that are
+inside it. When some part of bottom rectangle is covered, new rectangles
+are created. Otherwise empty list is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of newly created rectangles.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.modify_polygon">
+<code class="descclassname">connect_rectangles.</code><code class="descname">modify_polygon</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.modify_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>While there exist certain unwanted constelation of vertices, modify
+polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Modifies polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.multi_vertices">
+<code class="descclassname">connect_rectangles.</code><code class="descname">multi_vertices</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.multi_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether there is a special case of multiple vertices in
+a polygon. Special case is a triplet of consecutive vertices where the
+first one and last are identical.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygon</strong> &#8211; Polygon to be examined.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True/False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.no_points">
+<code class="descclassname">connect_rectangles.</code><code class="descname">no_points</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.no_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Go through all cases where no points of the <em>top</em> rectangle lie in the
+<em>bottom</em> one and the two rectangles are still intersecting. Create new
+rectangles from parts that are not covered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of newly created rectangles.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.one_point">
+<code class="descclassname">connect_rectangles.</code><code class="descname">one_point</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.one_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Go through all cases where one point of the <em>top</em> rectangle lies in
+the <em>bottom</em> one. Create new rectangles from parts that are not covered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of newly created rectangles.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.point_in_rectangle">
+<code class="descclassname">connect_rectangles.</code><code class="descname">point_in_rectangle</code><span class="sig-paren">(</span><em>rectangle</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.point_in_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether point with coordinates <em>i</em> and <em>j</em> lies in a given
+rectangle or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rectangle</strong> &#8211; Given rectangle.</li>
+<li><strong>i</strong> &#8211; X coordinate of the point.</li>
+<li><strong>j</strong> &#8211; Y coordinate of the point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.point_inside_rectangle">
+<code class="descclassname">connect_rectangles.</code><code class="descname">point_inside_rectangle</code><span class="sig-paren">(</span><em>rectangle</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.point_inside_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether point with coordinates <em>i</em> and <em>j</em> lies inside a given
+rectangle or not. Inside means anywhere in rectangle excluding its borders.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rectangle</strong> &#8211; Given rectangle.</li>
+<li><strong>i</strong> &#8211; X coordinate of the point.</li>
+<li><strong>j</strong> &#8211; Y coordinate of the point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.rotate">
+<code class="descclassname">connect_rectangles.</code><code class="descname">rotate</code><span class="sig-paren">(</span><em>l</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate list <em>l</em> <em>n</em> places to the left.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rotated list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.same">
+<code class="descclassname">connect_rectangles.</code><code class="descname">same</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.same" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether two points have identical x and y coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; Point a.</li>
+<li><strong>b</strong> &#8211; Point b.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.sort_bottom">
+<code class="descclassname">connect_rectangles.</code><code class="descname">sort_bottom</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.sort_bottom" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sort points on bottom border of axis-aligned rectangle. Order is from right</dt>
+<dd>to left. This means according to x coordinate in descending order.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; List of points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Sorted list of points.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.sort_left">
+<code class="descclassname">connect_rectangles.</code><code class="descname">sort_left</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.sort_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort points on left border of axis-aligned rectangle. Order is from
+bottom to top. This means according to y coordinate in descending order
+(in SVG).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; List of points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Sorted list of points.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.sort_right">
+<code class="descclassname">connect_rectangles.</code><code class="descname">sort_right</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.sort_right" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sort points on right border of axis-aligned rectangle. Order is from top</dt>
+<dd>to bottom. This means according to y coordinate in ascending order
+(in SVG).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; List of points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Sorted list of points.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.sort_top">
+<code class="descclassname">connect_rectangles.</code><code class="descname">sort_top</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.sort_top" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sort points on top border of axis-aligned rectangle. Order is from left</dt>
+<dd>to right. This means according to x coordinate in ascending order.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; List of points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Sorted list of points.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.swap_direction">
+<code class="descclassname">connect_rectangles.</code><code class="descname">swap_direction</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.swap_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap direction of order of vertices in list <em>l</em>. First vertex remains
+in its place.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with swapped direction.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.to_polygons">
+<code class="descclassname">connect_rectangles.</code><code class="descname">to_polygons</code><span class="sig-paren">(</span><em>rectangles</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.to_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of rectangles into a list of polygons. Each polygon is
+created from vertices of one rectangle and all other unique points that lie
+on the edges of the rectangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rectangles</strong> &#8211; List of rectangles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of polygons.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.two_points">
+<code class="descclassname">connect_rectangles.</code><code class="descname">two_points</code><span class="sig-paren">(</span><em>top</em>, <em>bottom</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.two_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Go through all cases where two points of the <em>top</em> rectangle lie in
+the <em>bottom</em> one. Create new rectangles from parts that are not covered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top</strong> &#8211; Rectangle in upper layer.</li>
+<li><strong>bottom</strong> &#8211; Rectangle in lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of newly created rectangles.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="connect_rectangles.unique">
+<code class="descclassname">connect_rectangles.</code><code class="descname">unique</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="headerlink" href="#connect_rectangles.unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a list of vertices and return only unique ones. Given vertices are
+in sorted and multiple occurences appear next to each other in given list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> &#8211; List of vertices.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List vertices with duplicities removed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-multi_objective">
+<span id="documentation-for-multi-objective"></span><h1>Documentation for: Multi-objective<a class="headerlink" href="#module-multi_objective" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="multi_objective.MyImage">
+<em class="property">class </em><code class="descclassname">multi_objective.</code><code class="descname">MyImage</code><span class="sig-paren">(</span><em>name</em>, <em>color_limitation_size</em>, <em>number_of_relevant_colors</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.MyImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing the source image. It preserves information about
+image <em>width</em>, <em>height</em>, list of <em>relevant_colors</em> and color values of some
+<em>pixels</em> according to given <em>step_size</em>.</p>
+<p>Relevant_colors: For each pixel, values for red, green and blue are
+rounded down to a multiple of <em>color_limitation_size</em>. Frequency of occurence of
+these rounded colors is calculated. Colors are then sorted according
+to their frequency and amount equal to <em>number_of_relevant_colors</em> of
+most frequent ones is selected.</p>
+<p>Pixels: Create a list of color values of pixels in an image. List
+contains a value for each pixel in every nth column of every nth row in
+an image where n equals <em>step_size</em>. Values for red, green and blue are
+rounded down to a multiple of <em>color_limitation_size</em>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="multi_objective.Picture">
+<em class="property">class </em><code class="descclassname">multi_objective.</code><code class="descname">Picture</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>relevant_colors</em>, <em>number_of_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Picture represents an individual. It contains a list of shapes
+<em>self.shapes</em>, method for saving the individual as SVG image <em>save</em>, five
+types of mutation (<em>mutate_color</em>, <em>mutate_dimensions</em>, <em>mutate_position</em>,
+<em>mutate_add</em> and <em>mutate_delete</em>) and two fitness functions
+(<em>evaluate_shapes_rgb</em> and <em>evaluate</em>).</p>
+<dl class="method">
+<dt id="multi_objective.Picture.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>pixels</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return tuple of fitness values. First is the rgb based fitness.
+Second is a number of objects in an individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>self</strong> &#8211; An individual we want to evaluate.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped for evaluate_shapes_rgb.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of fitness values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.evaluate_shapes_rgb">
+<code class="descname">evaluate_shapes_rgb</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>pixels</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.evaluate_shapes_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate an individual acording to rgb based fitness. For each item in
+<em>pixels</em> calculate the difference with color value of corresponding point
+in an individual. The difference is calculated for red, green and blue
+part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>self</strong> &#8211; An individual we want to evaluate.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Fitness value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.mutate_add">
+<code class="descname">mutate_add</code><span class="sig-paren">(</span><em>individual</em>, <em>relevant_colors</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.mutate_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mutation: New object is added.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.mutate_color">
+<code class="descname">mutate_color</code><span class="sig-paren">(</span><em>individual</em>, <em>relevant_colors</em>, <em>object_color_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.mutate_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color mutation: For each objects it is executed with probability
+<em>object_color_mutation_prob</em>. New color will be chosen randomly from
+the <em>relevant_colors</em> list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>object_color_mutation_prob</strong> &#8211; Probability for each object to be
+mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.mutate_delete">
+<code class="descname">mutate_delete</code><span class="sig-paren">(</span><em>individual</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.mutate_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly chosen object is deleted. Object is deleted only if there are
+more than two objects left.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>individual</strong> &#8211; An individual to be mutated.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.mutate_dimensions">
+<code class="descname">mutate_dimensions</code><span class="sig-paren">(</span><em>individual</em>, <em>object_dimensions_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.mutate_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensions mutation: For each objects it is executed with probability
+<em>object_color_mutation_prob</em>. Dimensions will be changed via gaussian
+mutation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>object_dimensions_mutation_prob</strong> &#8211; Probability for each object to
+be mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.mutate_position">
+<code class="descname">mutate_position</code><span class="sig-paren">(</span><em>individual</em>, <em>object_position_mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.mutate_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position mutation: For each objects it is executed with probability
+<em>object_position_mutation_prob</em>, position will be changed via
+gaussian mutation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>individual</strong> &#8211; An individual to be mutated.</li>
+<li><strong>object_position_mutation_prob</strong> &#8211; Probability for each object to be
+mutated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="multi_objective.Picture.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>name</em>, <em>width</em>, <em>height</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Picture.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save shapes to a file called <em>name</em> in SVG format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of SVG file to create.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>border_width</strong> &#8211; Width of black border for the objects.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="multi_objective.Shape">
+<em class="property">class </em><code class="descclassname">multi_objective.</code><code class="descname">Shape</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>relevant_colors</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.Shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class Shape represents an object that can be either a circle or
+a rectangle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="multi_objective.choose_unique">
+<code class="descclassname">multi_objective.</code><code class="descname">choose_unique</code><span class="sig-paren">(</span><em>hof</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.choose_unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return unique items from Pareto front. Method coppies all items from
+Pareto front <em>hof</em> to a list. Items were sorted. Method goes through the
+list and if two consecutive values are identical, one of them is deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hof</strong> &#8211; Hall of fame - Pareto front.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of unique items in Pareto front.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="multi_objective.evolution">
+<code class="descclassname">multi_objective.</code><code class="descname">evolution</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>relevant_colors</em>, <em>pixels</em>, <em>number_of_objects</em>, <em>population_size</em>, <em>number_of_generations</em>, <em>color_mutation_prob</em>, <em>object_color_mutation_prob</em>, <em>dimensions_mutation_prob</em>, <em>object_dimensions_mutation_prob</em>, <em>position_mutation_prob</em>, <em>object_position_mutation_prob</em>, <em>add_prob</em>, <em>delete_prob</em>, <em>xover_prob</em>, <em>border_width</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.evolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute evolution. Fitness function is registered. Population of
+<em>population_size</em> individuals is created. Tools are registred into toolbox.
+Hall of fame method  - Pareto front - is implemented.
+For each generation: Offspring are chosen via TournamentDCD selection. Then
+crossover and mutations are executed and fitness is evaluated. New
+population is selected from individuals in last population and offspring.
+Hall of fame is updated and fitness is saved to log.
+After all generations, unique individuals from Pareto front are chosen and
+saved as SVG files. Log of their fitnesses is created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>relevant_colors</strong> &#8211; List of relevant colors according to frequency.</li>
+<li><strong>pixels</strong> &#8211; List of color values of pixels in source image.</li>
+<li><strong>number_of_objects</strong> &#8211; Initial number of shapes in one individual.</li>
+<li><strong>population_size</strong> &#8211; Number of individuals in a population.</li>
+<li><strong>number_of_generations</strong> &#8211; Total number of generations to be evolved.</li>
+<li><strong>color_mutation_prob</strong> &#8211; Probability that color mutation will be done.</li>
+<li><strong>object_color_mutation_prob</strong> &#8211; Probability that color mutation will be
+executed for an object.</li>
+<li><strong>dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation will be
+done.</li>
+<li><strong>object_dimensions_mutation_prob</strong> &#8211; Probability that dimensions mutation
+will be executed for an object.</li>
+<li><strong>position_mutation_prob</strong> &#8211; Probability that position mutation will be
+done.</li>
+<li><strong>object_position_mutation_prob</strong> &#8211; Probability that position mutation
+will be executed for an object.</li>
+<li><strong>add_prob</strong> &#8211; Probability that add_object mutation will be done.</li>
+<li><strong>delete_prob</strong> &#8211; Probability that delete_object mutation will be done.</li>
+<li><strong>xover_prob</strong> &#8211; Probability that crossover will be done.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="multi_objective.log_fitness">
+<code class="descclassname">multi_objective.</code><code class="descname">log_fitness</code><span class="sig-paren">(</span><em>fitness_tuple</em>, <em>width</em>, <em>height</em>, <em>step_size</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.log_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate normalized fitness for the first value in fitness tuple.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fitness_tuple</strong> &#8211; Tuple of fitness values.</li>
+<li><strong>width</strong> &#8211; Width of source image.</li>
+<li><strong>height</strong> &#8211; Height of source image.</li>
+<li><strong>step_size</strong> &#8211; Indicates which points are evaluated and which
+are skipped.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Normalized fitness.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="multi_objective.point_in_shape">
+<code class="descclassname">multi_objective.</code><code class="descname">point_in_shape</code><span class="sig-paren">(</span><em>shape</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="headerlink" href="#multi_objective.point_in_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether point with coordinates <em>i</em> and <em>j</em> lies in a object of
+given shape or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>shape</strong> &#8211; Rectangle or circle.</li>
+<li><strong>i</strong> &#8211; X coordinate of the point.</li>
+<li><strong>j</strong> &#8211; Y coordinate of the point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True/False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Documentation for: Triangulation</a></li>
+<li><a class="reference internal" href="#module-connect_rectangles">Documentation for: Connect rectangles</a></li>
+<li><a class="reference internal" href="#module-multi_objective">Documentation for: Multi-objective</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="instructions.html" title="previous chapter">Instructions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/code.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Zuzana Drazdova.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/code.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
